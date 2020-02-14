@@ -56,7 +56,7 @@ async function run() {
       const existingAsset = existingAssets.find( a => a.name === file );
       if ( existingAsset ) {
         core.debug( `Removing existing asset '${file}' with ID ${existingAsset.id}...` );
-        octokit.repos.deleteReleaseAsset( {...repo, asset_id: existingAsset.id } )
+        await octokit.repos.deleteReleaseAsset( {...repo, asset_id: existingAsset.id } );
       }
 
       const fileName = path.basename( file );
