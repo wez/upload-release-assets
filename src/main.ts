@@ -13,11 +13,11 @@ async function run() {
     const tag = core.getInput( 'release-tag' );
     const token = core.getInput( 'repo-token', { required: true } );
     const octokit = new github.GitHub( token );
-    
+
     if ( tag ) {
       core.debug( `Getting release id for ${tag}...` );
       const release = await octokit.repos.getReleaseByTag( { ...repo, tag } );
-      
+
       release_id = release.data.id;
     } else {
       const action = github.context.payload.action;
@@ -29,7 +29,7 @@ async function run() {
           break;
         default:
           // Stop if not correct state, but do not fail
-          core.warning( `Cannot upload assets for release which is being ${action}` )
+          core.warning( `Cannot upload assets for release which has github.context.payload.action=${action}` )
           return;
       }
 
