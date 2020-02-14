@@ -1,5 +1,5 @@
-import * as core from '@actions/core';
-import * as github from '@actions/github';
+const github = require('@actions/github');
+const core = require('@actions/core');
 import fg from 'fast-glob';
 import fs from 'fs';
 import path from 'path';
