@@ -71,7 +71,7 @@ async function run() {
                 'content-length': fs.statSync(file).size
             };
 
-            for (i = 3; i >= 0; --i) {
+            for (let i = 3; i >= 0; --i) {
                 try {
                     await octokit.repos.uploadReleaseAsset({ url, headers, name: fileName, data: fileStream });
                 } catch (error) {
