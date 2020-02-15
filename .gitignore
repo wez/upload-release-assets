@@ -1,4 +1,5 @@
 __tests__/runner/*
+.*.swp*
 
 # comment out in distribution branches
 node_modules/
