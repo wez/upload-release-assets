@@ -71,7 +71,16 @@ async function run() {
                 'content-length': fs.statSync(file).size
             };
 
-            await octokit.repos.uploadReleaseAsset({ url, headers, name: fileName, data: fileStream });
+            for (i = 3; i >= 0; --i) {
+                try {
+                    await octokit.repos.uploadReleaseAsset({ url, headers, name: fileName, data: fileStream });
+                } catch (error) {
+                    core.debug(`Error uploading '${fileName}' to '${url}': ${error.message} ('${error}')`);
+                    if (i == 0) {
+                        throw error;
+                    }
+                }
+            }
         }
     } catch (error) {
         core.setFailed(error.message);
