@@ -5,11 +5,12 @@
   "description": "GitHub Action for uploading assets to a Release",
   "main": "lib/main.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "fmt": "tsfmt -r"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AButler/upload-release-assets.git"
+    "url": "git+https://github.com/wez/upload-release-assets.git"
   },
   "keywords": [
     "actions",
@@ -17,7 +18,7 @@
     "github",
     "release"
   ],
-  "author": "AButler",
+  "author": "wez",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.0",
@@ -25,5 +26,8 @@
     "fast-glob": "^3.0.4",
     "mime-types": "^2.1.24"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "typescript": "^3.7.0",
+    "typescript-formatter": "^7.2.0"
+  }
 }

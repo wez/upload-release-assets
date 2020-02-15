@@ -1,6 +1,6 @@
 name: 'Upload assets to a Release'
 description: 'GitHub Action that uploads assets to a GitHub release using a glob (cross-platform)'
-author: 'AButler'
+author: 'wez'
 branding:
   color: green
   icon: upload-cloud
