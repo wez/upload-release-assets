@@ -74,6 +74,7 @@ async function run() {
             for (let i = 3; i >= 0; --i) {
                 try {
                     await octokit.repos.uploadReleaseAsset({ url, headers, name: fileName, data: fileStream });
+                    break;
                 } catch (error) {
                     core.debug(`Error uploading '${fileName}' to '${url}': ${error.message} ('${error}')`);
                     if (i == 0) {
