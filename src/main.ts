@@ -50,29 +50,31 @@ async function run() {
         }
 
         const { data: { upload_url: url } } = await octokit.repos.getRelease({ ...repo, release_id });
-        const { data: existingAssets } = await octokit.repos.listAssetsForRelease({ ...repo, release_id });
 
-        for (let file of files) {
+        async function deleteReleaseAsset(file: string) {
+            const { data: existingAssets } = await octokit.repos.listAssetsForRelease({ ...repo, release_id });
             const existingAsset = existingAssets.find(a => a.name === file);
             if (existingAsset) {
                 console.log(`Removing existing asset '${file}' with ID ${existingAsset.id}...`);
                 await octokit.repos.deleteReleaseAsset({ ...repo, asset_id: existingAsset.id });
             }
+        }
 
-            const fileName = path.basename(file);
-            const fileStream = fs.createReadStream(file);
+        for (let file of files) {
             const contentType = mime.lookup(file) || 'application/zip';
-
-            console.log(`Uploading ${file}...`);
-            core.debug(`Content-Type = '${contentType}'`);
-
-            const headers = {
-                'content-type': contentType,
-                'content-length': fs.statSync(file).size
-            };
+            const fileName = path.basename(file);
 
             for (let i = 3; i >= 0; --i) {
                 try {
+                    await deleteReleaseAsset(file);
+
+                    const fileStream = fs.createReadStream(file);
+                    const headers = {
+                        'content-type': contentType,
+                        'content-length': fs.statSync(file).size
+                    };
+
+                    console.log(`Uploading ${file} with content-type '${contentType}'...`);
                     await octokit.repos.uploadReleaseAsset({ url, headers, name: fileName, data: fileStream });
                     console.log(`Successfully uploaded '${fileName}' to '${url}'`);
                     break;
