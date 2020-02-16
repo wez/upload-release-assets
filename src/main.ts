@@ -41,7 +41,7 @@ async function run() {
             return;
         }
 
-        core.debug(`Uploading assets to release: ${release_id}...`);
+        console.log(`Uploading assets to release: ${release_id}...`);
 
         const files = await fg(glob.split(';'));
         if (!files.length) {
@@ -55,7 +55,7 @@ async function run() {
         for (let file of files) {
             const existingAsset = existingAssets.find(a => a.name === file);
             if (existingAsset) {
-                core.debug(`Removing existing asset '${file}' with ID ${existingAsset.id}...`);
+                console.log(`Removing existing asset '${file}' with ID ${existingAsset.id}...`);
                 await octokit.repos.deleteReleaseAsset({ ...repo, asset_id: existingAsset.id });
             }
 
@@ -74,9 +74,10 @@ async function run() {
             for (let i = 3; i >= 0; --i) {
                 try {
                     await octokit.repos.uploadReleaseAsset({ url, headers, name: fileName, data: fileStream });
+                    console.log(`Successfully uploaded '${fileName}' to '${url}'`);
                     break;
                 } catch (error) {
-                    core.debug(`Error uploading '${fileName}' to '${url}': ${error.message} ('${error}')`);
+                    console.log(`Error uploading '${fileName}' to '${url}': ${error.message} ('${error}')`);
                     if (i == 0) {
                         throw error;
                     }
